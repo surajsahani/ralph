@@ -23,8 +23,12 @@ assert_json_value() {
 echo "Running Test 1: Iteration increment..."
 setup
 # Simulate AfterAgent hook input
-echo '{"prompt_response": "Some response"}' | "$HOOK" > /dev/null
+RESPONSE=$(echo '{"prompt_response": "Some response"}' | "$HOOK")
 assert_json_value ".current_iteration" "1"
+if [[ $(echo "$RESPONSE" | jq -r '.systemMessage') != "🔄 Ralph is starting iteration 2..." ]]; then
+    echo "FAIL: Expected systemMessage to be '🔄 Ralph is starting iteration 2...', but got '$(echo "$RESPONSE" | jq -r '.systemMessage')'"
+    exit 1
+fi
 
 echo "Running Test 2: Termination (Max Iterations)..."
 setup

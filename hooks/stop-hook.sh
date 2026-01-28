@@ -84,7 +84,8 @@ cat <<EOF
 {
   "decision": "deny",
   "reason": "$ORIGINAL_PROMPT",
-  "systemMessage": "🔄 Ralph is starting the next iteration..."
+  "systemMessage": "🔄 Ralph is starting iteration $((CURRENT_ITERATION + 1))...",
+  "clearContext": true
 }
 EOF
 

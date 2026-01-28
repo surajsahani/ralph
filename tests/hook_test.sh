@@ -107,4 +107,15 @@ if [[ $(echo "$RESPONSE" | jq -r '.decision') != "allow" ]]; then
     exit 1
 fi
 
+echo "Running Test 6: Automated Retry (Empty Prompt)..."
+setup
+# Iteration 2+ often has an empty prompt in the hook input
+RESPONSE=$(echo '{"prompt_response": "Iteration 2 response", "prompt": ""}' | "$HOOK")
+assert_exists "$STATE_FILE"
+assert_json_value ".current_iteration" "2"
+if [[ $(echo "$RESPONSE" | jq -r '.decision') != "deny" ]]; then
+    echo "FAIL: Expected decision to be 'deny' to continue the loop"
+    exit 1
+fi
+
 echo "PASS: All tests passed!"

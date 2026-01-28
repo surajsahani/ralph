@@ -41,9 +41,6 @@ fi
 # Validate that this turn belongs to the Ralph loop
 ORIGINAL_PROMPT=$(jq -r '.original_prompt' "$STATE_FILE")
 
-# Validate that this turn belongs to the Ralph loop
-ORIGINAL_PROMPT=$(jq -r '.original_prompt' "$STATE_FILE")
-
 if [[ "$CURRENT_PROMPT" != "$ORIGINAL_PROMPT" ]]; then
     # Normalize prompts for comparison by stripping prefix and extra whitespace
     # 1. Strip "/ralph:loop" prefix if present
@@ -52,7 +49,11 @@ if [[ "$CURRENT_PROMPT" != "$ORIGINAL_PROMPT" ]]; then
     CLEAN_CURRENT=$(echo "$CURRENT_PROMPT" | sed -E 's/^\/ralph:loop[[:space:]]+//' | sed -E 's/--max-iterations[[:space:]]+[^[:space:]]+[[:space:]]*//' | sed -E 's/--completion-promise[[:space:]]+[^[:space:]]+[[:space:]]*//' | xargs)
     CLEAN_ORIGINAL=$(echo "$ORIGINAL_PROMPT" | xargs)
 
-    if [[ "$CLEAN_CURRENT" != "$CLEAN_ORIGINAL" ]]; then
+    # Only perform mismatch check if a prompt was actually provided.
+    # Automated retries (like loop iterations) often have an empty prompt in the hook input.
+    if [[ -z "$CLEAN_CURRENT" ]]; then
+        : # Allow empty prompts (likely a Ralph-triggered iteration)
+    elif [[ "$CLEAN_CURRENT" != "$CLEAN_ORIGINAL" ]]; then
         rm -f "$STATE_FILE"
         # Only remove directory if it is empty
         if [[ -d "$STATE_DIR" ]]; then

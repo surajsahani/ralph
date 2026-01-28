@@ -22,7 +22,6 @@ die() {
 # Setup paths
 STATE_DIR=".gemini/ralph"
 STATE_FILE="$STATE_DIR/state.json"
-PROGRESS_FILE="$STATE_DIR/progress.txt"
 
 # Ensure directory exists
 mkdir -p "$STATE_DIR" || die "Could not create state directory: $STATE_DIR"
@@ -79,9 +78,6 @@ jq -n \
         original_prompt: $prompt,
         started_at: $started_at
     }' > "$STATE_FILE" || die "Failed to initialize state file: $STATE_FILE"
-
-# Initialize progress.txt
-echo "Ralph is starting a new loop for: $PROMPT" > "$PROGRESS_FILE"
 
 # Ralph-style summary for the user and agent
 echo ""

@@ -29,7 +29,6 @@ echo "Running Test 1: Basic setup..."
 setup
 ./scripts/setup.sh "Task"
 assert_exists "$STATE_FILE"
-assert_exists ".gemini/ralph/progress.txt"
 assert_json_value ".active" "true"
 assert_json_value ".current_iteration" "0"
 # Check if started_at is a valid ISO 8601 timestamp

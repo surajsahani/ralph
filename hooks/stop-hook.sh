@@ -26,7 +26,6 @@ die() {
 # Setup paths
 STATE_DIR=".gemini/ralph"
 STATE_FILE="$STATE_DIR/state.json"
-PROGRESS_FILE="$STATE_DIR/progress.txt"
 
 # Read hook input from stdin
 INPUT=$(cat)
@@ -77,9 +76,6 @@ fi
 
 # Log progress (persona)
 log "I'm doing a circle! Iteration $CURRENT_ITERATION is done."
-
-# Update progress tracking file
-echo "[Iteration $CURRENT_ITERATION] Finished at $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "$PROGRESS_FILE"
 
 # Maintain the loop by forcing a retry with the original prompt
 ORIGINAL_PROMPT=$(jq -r '.original_prompt' "$STATE_FILE")

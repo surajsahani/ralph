@@ -67,12 +67,14 @@ jq -n \
     --arg max "$MAX_ITERATIONS" \
     --arg promise "$COMPLETION_PROMISE" \
     --arg prompt "$PROMPT" \
+    --arg started_at "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
     '{
         active: true,
         current_iteration: 0,
         max_iterations: ($max | tonumber),
         completion_promise: $promise,
-        original_prompt: $prompt
+        original_prompt: $prompt,
+        started_at: $started_at
     }' > "$STATE_FILE"
 
 # Initialize progress.txt

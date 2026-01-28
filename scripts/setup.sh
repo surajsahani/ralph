@@ -33,49 +33,31 @@ PROMPT=""
 
 # Workaround for LLM tool invocation passing all args as a single string
 if [[ $# -eq 1 ]]; then
-    if [[ "$1" == "/ralph:loop"* ]] || [[ "$1" =~ ^- ]] || [[ "$1" =~ " --" ]]; then
-        # Remove command prefix if present
-        raw_args="${1#/ralph:loop }"
-        # Use python to parse arguments safely and handle potential quoting issues
-        eval set -- "$(python3 -c 'import sys, shlex; print(" ".join(map(shlex.quote, shlex.split(sys.argv[1]))))' "$raw_args")" || die "Failed to parse combined arguments"
-    fi
+  if [[ "$1" =~ ^- ]] || [[ "$1" =~ " --" ]]; then
+     eval set -- "$1"
+  fi
 fi
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --max-iterations=*)
-            val="${1#*=}"
-            [[ "$val" =~ ^[0-9]+$ ]] || die "Invalid iteration limit: '$val'"
-            MAX_ITERATIONS="$val"
-            shift 1
-            ;;
-        --max-iterations)
-            [[ "${2:-}" =~ ^[0-9]+$ ]] || die "Invalid iteration limit: '${2:-}'"
-            MAX_ITERATIONS="$2"
-            shift 2
-            ;;
-        --completion-promise=*)
-            COMPLETION_PROMISE="${1#*=}"
-            shift 1
-            ;;
-        --completion-promise)
-            [[ -n "${2:-}" ]] || die "Missing promise text."
-            COMPLETION_PROMISE="$2"
-            shift 2
-            ;;
-        *)
-            if [[ "$1" != -* ]]; then
-                if [[ -z "$PROMPT" ]]; then
-                    PROMPT="$1"
-                else
-                    PROMPT="$PROMPT $1"
-                fi
-            fi
-            shift 1
-            ;;
-    esac
+  case "$1" in
+    --max-iterations)
+      [[ "${2:-}" =~ ^[0-9]+$ ]] || die "Invalid iteration limit: '${2:-}'"
+      MAX_ITERATIONS="$2"
+      shift 2
+      ;;
+    --completion-promise)
+      [[ -n "${2:-}" ]] || die "Missing promise text."
+      COMPLETION_PROMISE="$2"
+      shift 2
+      ;;
+    *)
+      PROMPT_ARGS+=("$1")
+      shift
+      ;;
+  esac
 done
+PROMPT="${PROMPT_ARGS[*]:-}"
 
 # Ensure a prompt was provided
 [[ -n "$PROMPT" ]] || die "No task specified. Run /ralph:help for usage."

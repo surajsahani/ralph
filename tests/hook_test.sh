@@ -22,9 +22,15 @@ assert_json_value() {
 
 echo "Running Test 1: Iteration increment..."
 setup
+PROGRESS_FILE=".gemini/ralph/progress.txt"
+echo "Initial" > "$PROGRESS_FILE"
 # Simulate AfterAgent hook input
 RESPONSE=$(echo '{"prompt_response": "Some response"}' | "$HOOK")
 assert_json_value ".current_iteration" "1"
+if ! grep -q "\[Iteration 1\]" "$PROGRESS_FILE"; then
+    echo "FAIL: progress.txt was not updated with iteration info"
+    exit 1
+fi
 if [[ $(echo "$RESPONSE" | jq -r '.systemMessage') != "🔄 Ralph is starting iteration 2..." ]]; then
     echo "FAIL: Expected systemMessage to be '🔄 Ralph is starting iteration 2...', but got '$(echo "$RESPONSE" | jq -r '.systemMessage')'"
     exit 1

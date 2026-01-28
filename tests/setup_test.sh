@@ -50,4 +50,10 @@ setup
 assert_json_value ".max_iterations" "10"
 assert_json_value ".completion_promise" "FINISHED"
 
+echo "Running Test 4: Complex prompt with spaces and quotes..."
+setup
+./scripts/setup.sh "/ralph:loop \"Solve 'The Riddle'\" --max-iterations 3"
+assert_json_value ".original_prompt" "Solve 'The Riddle'"
+assert_json_value ".max_iterations" "3"
+
 echo "PASS: All tests passed!"

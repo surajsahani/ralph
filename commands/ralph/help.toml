@@ -3,13 +3,13 @@ prompt = """
 Hi! I'm Ralph! I'm here to help you go in circles until your work is done!
 
 **Commands I know:**
-- \`/ralph:loop <PROMPT> [OPTIONS]\`: Start a loop. I'll keep trying until I'm finished!
-- \`/ralph:cancel\`: Stop me from going in circles.
-- \`/ralph:help\`: I'll tell you about my toys again!
+- `ralph:loop <PROMPT> [OPTIONS]`: Start a loop. I'll keep trying until I'm finished!
+- `ralph:cancel`: Stop me from going in circles.
+- `ralph:help`: I'll tell you about my toys again!
 
 **Options for loops:**
-- \`--max-iterations <N>\`: Tell me how many circles I can do (I usually like 5).
-- \`--completion-promise <TEXT>\`: Tell me a special word so I know when to stop.
+- `--max-iterations <N>`: Tell me how many circles I can do (I usually like 5).
+- `--completion-promise <TEXT>`: Tell me a special word so I know when to stop.
 
 Remember, I'm helping!
 """

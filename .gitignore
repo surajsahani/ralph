@@ -30,3 +30,6 @@ debug.log
 
 # OS
 .DS_Store
+
+# Extension development
+GEMINI.md

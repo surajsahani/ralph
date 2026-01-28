@@ -47,8 +47,8 @@ assert_not_exists() {
 
 echo "Running Test 1: Iteration increment..."
 setup
-# Simulate AfterAgent hook input
-RESPONSE=$(echo '{"prompt_response": "Some response", "prompt": "Task"}' | "$HOOK")
+# Simulate initial command invocation with flags (Iteration 1)
+RESPONSE=$(echo '{"prompt_response": "Some response", "prompt": "/ralph:loop --max-iterations 5 Task"}' | "$HOOK")
 assert_exists "$STATE_FILE"
 assert_json_value ".current_iteration" "2"
 if [[ $(echo "$RESPONSE" | jq -r '.systemMessage') != "🔄 Ralph is starting iteration 2..." ]]; then
@@ -60,7 +60,7 @@ echo "Running Test 2: Termination (Max Iterations)..."
 setup
 # Set current_iteration to 5, max_iterations is 5
 jq '.current_iteration = 5' "$STATE_FILE" > "${STATE_FILE}.tmp" && mv "${STATE_FILE}.tmp" "$STATE_FILE"
-# This turn (5th) should trigger termination
+# Subsequent iterations use the exact ORIGINAL_PROMPT
 RESPONSE=$(echo '{"prompt_response": "Last response", "prompt": "Task"}' | "$HOOK")
 assert_not_exists "$STATE_FILE"
 if [[ $(echo "$RESPONSE" | jq -r '.decision') != "allow" ]]; then
@@ -87,6 +87,21 @@ RESPONSE=$(echo '{"prompt_response": "Paris", "prompt": "What is the capital of 
 assert_not_exists "$STATE_FILE"
 if [[ $(echo "$RESPONSE" | jq -r '.decision') != "allow" ]]; then
     echo "FAIL: Expected decision to be 'allow' for unrelated prompt"
+    exit 1
+fi
+if [[ $(echo "$RESPONSE" | jq -r '.systemMessage') != "null" ]]; then
+    echo "FAIL: Ghost loop cleanup should be silent"
+    exit 1
+fi
+
+echo "Running Test 5: Hijack Prevention (Different Loop Command)..."
+setup
+# state.json contains "Task" (from an orphaned loop A)
+# User now runs a NEW loop B with a different prompt
+RESPONSE=$(echo '{"prompt_response": "New Task response", "prompt": "/ralph:loop Different Task"}' | "$HOOK")
+assert_not_exists "$STATE_FILE"
+if [[ $(echo "$RESPONSE" | jq -r '.decision') != "allow" ]]; then
+    echo "FAIL: Expected decision to be 'allow' when a different loop command is detected"
     exit 1
 fi
 

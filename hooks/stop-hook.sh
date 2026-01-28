@@ -113,6 +113,7 @@ log "I'm doing a circle! Iteration $CURRENT_ITERATION is done."
 # Maintain the loop by forcing a retry with the original prompt
 ORIGINAL_PROMPT=$(jq -r '.original_prompt' "$STATE_FILE")
 
+# Clear conversation history (LLM memory)
 cat <<EOF
 {
   "decision": "deny",

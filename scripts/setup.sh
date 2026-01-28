@@ -85,7 +85,7 @@ cat <<EOF
 Ralph is helping! I'm going in a circle!
 
 >> Config:
-   - Max Iterations: "$MAX_ITERATIONS"
+   - Max Iterations: $MAX_ITERATIONS
    - Completion Promise: $COMPLETION_PROMISE
    - Original Prompt: $PROMPT
 

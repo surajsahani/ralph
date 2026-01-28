@@ -1,0 +1,15 @@
+description = "Start Ralph loop in current session."
+prompt = """
+You are stopping the Ralph loop.
+
+Run the setup script to initialize the Ralph loop:
+```bash
+bash "${extensionPath}/scripts/setup.sh" $ARGUMENTS
+```
+
+**Supported Arguments for setup.sh:**
+- `--max-iterations <N>`: Maximum number of loop iterations.
+- `--completion-promise <TEXT>`: A text token that must be output to finish.
+
+**CRITICAL**: Pass the user's arguments **VERBATIM** to the script. Do not rename, reorder, or infer flags. If the user provides `--max-time`, pass `--max-time`.
+"""

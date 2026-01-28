@@ -91,8 +91,7 @@ Ralph is helping! I'm going in a circle!
 
 I'm starting now! I hope I don't run out of paste!
 
-⚠️  WARNING: This loop will continue until the task is complete,
-    the iteration limit ($MAX_ITERATIONS) is reached, or a promise is fulfilled.
+⚠️  WARNING: This loop will continue the iteration limit ($MAX_ITERATIONS) is reached, or a promise is fulfilled.
 EOF
 
 if [[ -n "$COMPLETION_PROMISE" ]]; then
@@ -102,4 +101,5 @@ if [[ -n "$COMPLETION_PROMISE" ]]; then
 fi
 
 # Output for persona (stderr)
+echo ""
 echo "Ralph is helping! I'm setting up my toys." >&2

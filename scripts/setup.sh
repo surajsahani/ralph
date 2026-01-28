@@ -85,8 +85,8 @@ cat <<EOF
 Ralph is helping! I'm going in a circle!
 
 >> Config:
-   - Max Iterations: $( [[ $MAX_ITERATIONS -gt 0 ]] && echo "$MAX_ITERATIONS" || echo "∞" )
-   - Completion Promise: $( [[ "$COMPLETION_PROMISE" != "null" ]] && echo "$COMPLETION_PROMISE" || echo "None" )
+   - Max Iterations: "$MAX_ITERATIONS"
+   - Completion Promise: $COMPLETION_PROMISE
    - Original Prompt: $PROMPT
 
 I'm starting now! I hope I don't run out of paste!

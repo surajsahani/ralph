@@ -54,7 +54,7 @@ if [[ "$CLEAN_CURRENT" != "$CLEAN_ORIGINAL" ]]; then
     if [[ -d "$STATE_DIR" ]]; then
         rmdir "$STATE_DIR" 2>/dev/null || true
     fi
-    echo '{"decision": "allow"}'
+    echo '{"decision": "allow", "systemMessage": "Prompt mismatch between Ralph loops."}'
     exit 0
 fi
 

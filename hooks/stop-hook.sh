@@ -46,7 +46,7 @@ if [[ "$CURRENT_PROMPT" != "$ORIGINAL_PROMPT" ]]; then
     if [[ -d "$STATE_DIR" ]]; then
         rmdir "$STATE_DIR" 2>/dev/null || true
     fi
-    echo '{"decision": "allow"}'
+    echo '{"decision": "allow", "systemMessage": "🚨 Ralph forgot to clean up after himself on the last loop. Run the command again to continue."}'
     exit 0
 fi
 

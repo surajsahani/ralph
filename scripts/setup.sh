@@ -71,6 +71,9 @@ while [[ $# -gt 0 ]]; do
 done
 PROMPT="${PROMPT_ARGS[*]:-}"
 
+# Strip /ralph:loop prefix if present
+PROMPT=$(echo "$PROMPT" | sed -E 's|^/ralph:loop[[:space:]]+||')
+
 # Ensure a prompt was provided
 [[ -n "$PROMPT" ]] || die "No task specified. Run /ralph:help for usage."
 

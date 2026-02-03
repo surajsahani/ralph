@@ -19,7 +19,12 @@ echo "🔍 Validating Ralph prerequisites..."
 
 # Check for jq
 if ! command -v jq &> /dev/null; then
-    echo "❌ Error: jq is not installed. Install it with: brew install jq"
+    echo "❌ Error: jq is not installed."
+    echo "   Install it with:"
+    echo "   - macOS: brew install jq"
+    echo "   - Debian/Ubuntu: sudo apt-get install jq"
+    echo "   - Fedora/RHEL: sudo dnf install jq"
+    echo "   - Arch: sudo pacman -S jq"
     exit 1
 fi
 

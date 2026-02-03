@@ -25,7 +25,11 @@
    }
    ```
 
-3. Ensure `jq` is installed: `brew install jq`
+3. Ensure `jq` is installed:
+   - macOS: `brew install jq`
+   - Debian/Ubuntu: `sudo apt-get install jq`
+   - Fedora/RHEL: `sudo dnf install jq`
+   - Arch: `sudo pacman -S jq`
 
 ### Loop Won't Stop
 

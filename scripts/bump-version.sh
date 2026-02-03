@@ -28,7 +28,11 @@ if [[ ! "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     exit 1
 fi
 
-jq --arg version "$NEW_VERSION" '.version = $version' gemini-extension.json > gemini-extension.json.tmp
+jq --arg version "$NEW_VERSION" '.version = $version' gemini-extension.json > gemini-extension.json.tmp || {
+    echo "❌ Error: jq command failed" >&2
+    rm -f gemini-extension.json.tmp
+    exit 1
+}
 mv gemini-extension.json.tmp gemini-extension.json
 
 echo "✅ Version bumped to $NEW_VERSION"

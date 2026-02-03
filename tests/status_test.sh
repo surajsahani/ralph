@@ -17,9 +17,11 @@ cleanup() {
     fi
 }
 
+# Cleanup before each test and on exit
 trap cleanup EXIT
 
 echo "Running Test 1: No active loop..."
+cleanup
 setup
 OUTPUT=$("$STATUS_SCRIPT" 2>&1)
 if [[ "$OUTPUT" != *"not doing anything"* ]]; then
@@ -28,6 +30,7 @@ if [[ "$OUTPUT" != *"not doing anything"* ]]; then
 fi
 
 echo "Running Test 2: Active loop status..."
+cleanup
 setup
 jq -n '{
     active: true,
